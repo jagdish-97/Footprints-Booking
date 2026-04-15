@@ -44,6 +44,8 @@ const initialFormFields = {
 
 export default function BookingPage() {
     const [therapist, setTherapist] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [availabilityByDate, setAvailabilityByDate] = useState({});
     const [orderedDates, setOrderedDates] = useState([]);
     const [visibleDateStart, setVisibleDateStart] = useState(0);
@@ -78,17 +80,32 @@ export default function BookingPage() {
 
     useEffect(() => {
         async function initPage() {
-            const therapists = await loadBookingTherapists();
-            const selectedTherapist = resolveTherapistFromQuery(therapists);
-            const bookedSlots = await fetchBookedSlots(selectedTherapist.id);
-            const availability = buildAvailabilityMap(selectedTherapist, bookedSlots);
-            const ordered = Object.keys(availability)
-                .filter((key) => availability[key].slots.length > 0)
-                .sort((left, right) => left.localeCompare(right));
+            try {
+                setLoading(true);
+                const therapists = await loadBookingTherapists();
+                const selectedTherapist = resolveTherapistFromQuery(therapists);
+                
+                if (!selectedTherapist) {
+                    setError("No therapist available. Please try again.");
+                    return;
+                }
+                
+                const bookedSlots = await fetchBookedSlots(selectedTherapist.id);
+                const availability = buildAvailabilityMap(selectedTherapist, bookedSlots);
+                const ordered = Object.keys(availability)
+                    .filter((key) => availability[key].slots.length > 0)
+                    .sort((left, right) => left.localeCompare(right));
 
-            setTherapist(selectedTherapist);
-            setAvailabilityByDate(availability);
-            setOrderedDates(ordered);
+                setTherapist(selectedTherapist);
+                setAvailabilityByDate(availability);
+                setOrderedDates(ordered);
+                setError(null);
+            } catch (err) {
+                console.error("Error initializing booking page:", err);
+                setError(`Error loading booking page: ${err.message}`);
+            } finally {
+                setLoading(false);
+            }
         }
 
         initPage();
@@ -339,11 +356,35 @@ export default function BookingPage() {
         setDetailsEnabled(false);
     };
 
+    if (loading) {
+        return (
+            <main className="relative bg-blush text-ink min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <p className="text-lg font-semibold">Loading therapist details...</p>
+                </div>
+            </main>
+        );
+    }
+
+    if (error) {
+        return (
+            <main className="relative bg-blush text-ink min-h-screen flex items-center justify-center">
+                <div className="text-center max-w-md">
+                    <p className="text-lg font-semibold text-red-600 mb-4">Error</p>
+                    <p className="text-base mb-6">{error}</p>
+                    <a href="/" className="inline-block px-6 py-3 bg-rosewood text-white rounded-full hover:bg-opacity-90 transition">
+                        Back to Therapists
+                    </a>
+                </div>
+            </main>
+        );
+    }
+
     if (!therapist) {
         return (
             <main className="relative bg-blush text-ink min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <p className="text-lg">Loading therapist details...</p>
+                    <p className="text-lg">Therapist not found. Please try again.</p>
                 </div>
             </main>
         );
@@ -822,12 +863,29 @@ async function postBookedSlot(therapistId, dateKey, time, formFields) {
 
 function resolveTherapistFromQuery(therapists) {
     if (typeof window === "undefined") {
-        return therapists[0];
+        return therapists?.[0] || null;
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const therapistId = params.get("therapist");
-    return therapists.find((item) => item.id === therapistId) || therapists[0];
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const therapistId = params.get("therapist");
+        
+        if (!therapistId) {
+            console.warn("No therapist ID in URL, using first therapist");
+            return therapists?.[0] || null;
+        }
+        
+        const found = therapists?.find((item) => item.id === therapistId);
+        if (!found) {
+            console.warn(`Therapist ${therapistId} not found, using first therapist`);
+            return therapists?.[0] || null;
+        }
+        
+        return found;
+    } catch (error) {
+        console.error("Error resolving therapist from query:", error);
+        return therapists?.[0] || null;
+    }
 }
 
 function buildAvailabilityMap(therapist, bookedSlots) {
