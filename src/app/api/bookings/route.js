@@ -26,7 +26,10 @@ export async function GET(request) {
 
     if (error) {
       console.error("Error fetching bookings:", error);
-      return NextResponse.json({ error: "Failed to fetch bookings" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to fetch bookings", details: error.message, code: error.code },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(normalizeRows(data));
@@ -41,7 +44,10 @@ export async function GET(request) {
 
   if (error) {
     console.error("Error fetching all bookings:", error);
-    return NextResponse.json({ error: "Failed to fetch bookings" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch bookings", details: error.message, code: error.code },
+      { status: 500 }
+    );
   }
 
   const bookings = data.reduce((acc, row) => {
@@ -85,7 +91,10 @@ export async function POST(request) {
 
   if (error) {
     console.error("Error inserting booking:", error);
-    return NextResponse.json({ error: "Failed to save booking" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to save booking", details: error.message, code: error.code },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ success: true, data });
