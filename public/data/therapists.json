@@ -1,0 +1,629 @@
+[
+    {
+        "id":  "siham-abdelqader",
+        "name":  "Siham Abdelqader",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Siham%20Pic%202.jpg/:/cr=t:9.58%25,l:0%25,w:100%25,h:50.13%25/rs=w:388,h:291.72932330827064,cg:true",
+        "title":  "MHC-LP",
+        "location":  "NY",
+        "specialties":  [
+                            "Depression",
+                            "Anxiety",
+                            "Trauma"
+                        ],
+        "languages":  [
+                          "English",
+                          "Arabic"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Family"
+                         ],
+        "price":  165,
+        "availability":  "Available",
+        "summary":  "Values multiculturalism, cultural awareness, compassion, and empathy. Experienced supporting clients with depression, anxiety, trauma, self-esteem, stress management, and family or marital conflicts."
+    },
+    {
+        "id":  "diana-abrams",
+        "name":  "Diana Abrams",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Diana_Abrams.jpg/:/cr=t:21.8%25,l:0%25,w:100%25,h:56.39%25/rs=w:388,h:291.72932330827064,cg:true",
+        "title":  "MHC-LP",
+        "location":  "NJ",
+        "specialties":  [
+                            "Trauma",
+                            "Empowerment",
+                            "Personal Growth"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Trauma-Informed"
+                         ],
+        "price":  175,
+        "availability":  "Limited",
+        "summary":  "Creates a safe space where clients feel seen, heard, and empowered. Practices from a trauma-informed lens with empathy, cultural humility, and collaboration."
+    },
+    {
+        "id":  "kevin-adams",
+        "name":  "Kevin Adams",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Kevin%20Adams%20.webp/:/cr=t:0.43%25,l:0%25,w:100%25,h:75.08%25/rs=w:388,h:291.72932330827064,cg:true",
+        "title":  "MHC-LP",
+        "location":  "FL",
+        "specialties":  [
+                            "Person-Centered",
+                            "Group Therapy",
+                            "Multicultural"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Group"
+                         ],
+        "price":  145,
+        "availability":  "Available",
+        "summary":  "Follows a person-centered approach and believes treatment plans should be tailored to each client. Brings a versatile style and works across cultures and group settings."
+    },
+    {
+        "id":  "carol-aiuto",
+        "name":  "Carol Aiuto",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Carol%20Aiuto%20.webp/:/cr=t:12.41%25,l:0%25,w:100%25,h:75.19%25/rs=w:388,h:291.72932330827064,cg:true",
+        "title":  "MHC-I",
+        "location":  "NY",
+        "specialties":  [
+                            "CBT",
+                            "Life Coaching",
+                            "Strengths"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Supportive"
+                         ],
+        "price":  155,
+        "availability":  "Available",
+        "summary":  "Brings over five years of coaching experience and dual master\u0027s degrees in school counseling and mental health counseling, with a strong focus on helping people overcome obstacles and realize their potential."
+    },
+    {
+        "id":  "shamina-aktar",
+        "name":  "Shamina Aktar",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Shamina%20Aktar%20.webp/:/cr=t:0.43%25,l:0%25,w:100%25,h:75.19%25/rs=w:388,h:291.72932330827064,cg:true",
+        "title":  "MHC-LP",
+        "location":  "CT",
+        "specialties":  [
+                            "Trauma",
+                            "Substance Use",
+                            "Anxiety"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "CBT"
+                         ],
+        "price":  190,
+        "availability":  "Waitlist",
+        "summary":  "Works to help clients feel safe, heard, and understood in a supportive, judgement-free environment. Draws from person-centered, motivational interviewing, CBT, and solution-focused approaches."
+    },
+    {
+        "id":  "lourdyes-alger",
+        "name":  "Lourdyes Alger",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Lourdyes%20Alger%20-d726671.webp",
+        "title":  "Partner-LMHC",
+        "location":  "NV",
+        "specialties":  [
+                            "Trauma",
+                            "Anxiety",
+                            "Depression"
+                        ],
+        "languages":  [
+                          "English",
+                          "Spanish"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Mindfulness"
+                         ],
+        "price":  130,
+        "availability":  "Available",
+        "summary":  "Has over eight years of psychotherapy experience and uses person-centered, cognitive behavioral, and mindfulness approaches with children and adults working through trauma, anxiety, and depression."
+    },
+    {
+        "id":  "marie-allen",
+        "name":  "Marie Allen",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Marie%20Allen.webp/:/cr=t:0%25,l:0%25,w:100%25,h:75.19%25/rs=w:388,h:291.72932330827064,cg:true",
+        "title":  "MHC-LP",
+        "location":  "NJ",
+        "specialties":  [
+                            "Personalized Care",
+                            "Counseling",
+                            "Support"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Supportive"
+                         ],
+        "price":  180,
+        "availability":  "Limited",
+        "summary":  "Brings more than 20 years of expertise to mental health counseling and focuses on creating supportive environments with personalized therapeutic interventions tailored to each person\u0027s needs."
+    },
+    {
+        "id":  "nicole-allen",
+        "name":  "Nicole Allen",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Nicole%20Allen.JPG/:/cr=t:11.35%25,l:0%25,w:100%25,h:57.39%25/rs=w:776,h:583,cg:true",
+        "title":  "MHC-I",
+        "location":  "FL",
+        "specialties":  [
+                            "Client Care",
+                            "Case Management",
+                            "Life Challenges"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Supportive"
+                         ],
+        "price":  125,
+        "availability":  "Available",
+        "summary":  "Brings a strong foundation in interpersonal communication and a deep commitment to helping people navigate difficult circumstances with compassionate, client-centered support."
+    },
+    {
+        "id":  "asma-ansari",
+        "name":  "Asma Ansari",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Asma%20Ansari.jpg/:/cr=t:35.05%25,l:17.53%25,w:64.94%25,h:32.54%25/rs=w:388,h:291.72932330827064,cg:true,m",
+        "title":  "Psychotherapist",
+        "location":  "CT",
+        "specialties":  [
+                            "CBT",
+                            "DBT",
+                            "Mindfulness"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "ACT"
+                         ],
+        "price":  160,
+        "availability":  "Available",
+        "summary":  "Blends traditional approaches like CBT and DBT with Internal Family Systems, ACT, mindfulness, and body-based awareness, helping clients reconnect with themselves through compassion and collaboration."
+    },
+    {
+        "id":  "ray-ansarul",
+        "name":  "Ray Ansarul",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Ray%20Ansarul%20.webp/:/cr=t:12.35%25,l:0%25,w:100%25,h:75.29%25/rs=w:388,h:291.72932330827064,cg:true",
+        "title":  "MHC-I",
+        "location":  "NY",
+        "specialties":  [
+                            "Compassion",
+                            "Collaboration",
+                            "Supportive Care"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Supportive"
+                         ],
+        "price":  170,
+        "availability":  "Waitlist",
+        "summary":  "Strives to create a safe, compassionate, and understanding space, with a strong belief that effective therapy grows from a trusting therapeutic relationship and collaborative pacing."
+    },
+    {
+        "id":  "jean-antoine",
+        "name":  "Jean Antoine",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Jean%20Antoine.png/:/cr=t:16.42%25,l:0%25,w:100%25,h:56.12%25/rs=w:388,h:291.72932330827064,cg:true",
+        "title":  "MHC-LP",
+        "location":  "NV",
+        "specialties":  [
+                            "Anxiety",
+                            "Chronic Illness",
+                            "CBT"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Person-Centered"
+                         ],
+        "price":  150,
+        "availability":  "Available",
+        "summary":  "Offers a safe and open space to build rapport and work through current stressors, using cognitive behavioral therapy and person-centered therapy to support anxiety, chronic illness, and emotional processing."
+    },
+    {
+        "id":  "lashonne-small",
+        "name":  "Lashonne Small",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/IMG_0274.jpeg/:/cr=t:16.52%25,l:0%25,w:100%25,h:66.97%25/rs=w:776,h:583,cg:true",
+        "title":  "MHC-LP",
+        "location":  "FL",
+        "specialties":  [
+                            "Adolescents",
+                            "Couples",
+                            "Families"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Couples"
+                         ],
+        "price":  210,
+        "availability":  "Limited",
+        "summary":  "Creates a supportive space for individuals, adolescents, couples, and families to work through life changes, improve communication, and build healthier, more confident relationships."
+    },
+    {
+        "id":  "sheila-arias",
+        "name":  "Sheila Arias",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Sheila_Arias-aa06685.webp",
+        "title":  "MHC-LP",
+        "location":  "NY",
+        "specialties":  [
+                            "Children",
+                            "Families",
+                            "CBT"
+                        ],
+        "languages":  [
+                          "English",
+                          "Spanish"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Family"
+                         ],
+        "price":  165,
+        "availability":  "Available",
+        "summary":  "Has more than fourteen years of experience working with children, disabled adults, and families, using person-centered and cognitive behavioral approaches to create a safe and comfortable environment for growth."
+    },
+    {
+        "id":  "ranique-bell",
+        "name":  "Ranique Bell",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Ranique_Bell.webp",
+        "title":  "MHC-LP",
+        "location":  "NJ",
+        "specialties":  [
+                            "Depression",
+                            "Anxiety",
+                            "Trauma"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Family"
+                         ],
+        "price":  175,
+        "availability":  "Limited",
+        "summary":  "Brings over ten years of experience helping teenagers, individuals, and families improve relationships, navigate depression and anxiety, heal trauma, and adjust to major life transitions."
+    },
+    {
+        "id":  "kathy-ann-best",
+        "name":  "Kathy-Ann Best",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Kathy-Ann%20Best.jpg",
+        "title":  "MHC-I",
+        "location":  "FL",
+        "specialties":  [
+                            "Trauma-Informed",
+                            "Couples",
+                            "Families"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Couples"
+                         ],
+        "price":  145,
+        "availability":  "Available",
+        "summary":  "Contributes a systems-oriented, trauma-informed, and culturally sensitive approach, offering a nonjudgmental space for individuals, couples, and families to explore relational patterns and build healthier connections."
+    },
+    {
+        "id":  "vanessa-campos",
+        "name":  "Vanessa Campos",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Vanessa%20Campos%20PIC%202-1.png",
+        "title":  "MHC-I",
+        "location":  "NY",
+        "specialties":  [
+                            "Autism Support",
+                            "Children",
+                            "Life Transitions"
+                        ],
+        "languages":  [
+                          "English",
+                          "Spanish"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Supportive"
+                         ],
+        "price":  155,
+        "availability":  "Available",
+        "summary":  "Views therapy as a collaborative process and brings particular interest in supporting children and individuals on the autism spectrum while creating a welcoming space for lasting, positive change."
+    },
+    {
+        "id":  "taylor-carroll",
+        "name":  "Taylor Carroll",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Taylor%20Carroll%20.webp",
+        "title":  "MHC-LP",
+        "location":  "CT",
+        "specialties":  [
+                            "Anxiety",
+                            "OCD",
+                            "Depression"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "CBT"
+                         ],
+        "price":  190,
+        "availability":  "Waitlist",
+        "summary":  "Was inspired by personal mental health recovery and now supports children and adults struggling with anxiety, agoraphobia, OCD, depression, and BPD using CBT, DBT, and ERP in a judgment-free environment."
+    },
+    {
+        "id":  "mercedes-carter",
+        "name":  "Mercedes Carter",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Mercedes%20Carter%20.webp",
+        "title":  "MHC-LP",
+        "location":  "NV",
+        "specialties":  [
+                            "Resilience",
+                            "Depression",
+                            "Anxiety"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "CBT"
+                         ],
+        "price":  130,
+        "availability":  "Available",
+        "summary":  "Focuses on helping clients regain resilience while navigating adversity, with broad mental health experience and a strong grounding in cognitive behavioral techniques."
+    },
+    {
+        "id":  "edwin-cotto",
+        "name":  "Edwin Cotto",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Edwin%20Cotto%20.webp",
+        "title":  "LCSW/Supervisor",
+        "location":  "NJ",
+        "specialties":  [
+                            "Family Counseling",
+                            "CBT",
+                            "DBT"
+                        ],
+        "languages":  [
+                          "English",
+                          "Spanish"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Family"
+                         ],
+        "price":  180,
+        "availability":  "Limited",
+        "summary":  "Brings extensive experience in school and family counseling and uses evidence-based approaches like CBT and DBT to help clients navigate challenges with practical tools and steady support."
+    },
+    {
+        "id":  "kirdania-de-la-cruz",
+        "name":  "Kirdania De La Cruz",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Kirdania%20De%20La%20Cruz%20.webp",
+        "title":  "MHC-I",
+        "location":  "FL",
+        "specialties":  [
+                            "Anxiety",
+                            "Depression",
+                            "Trauma"
+                        ],
+        "languages":  [
+                          "English",
+                          "Spanish"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Mindfulness"
+                         ],
+        "price":  125,
+        "availability":  "Available",
+        "summary":  "Brings a compassionate, holistic approach and creates a safe, nonjudgmental space while integrating solution-focused therapy, CBT, and mindfulness for anxiety, depression, trauma, identity concerns, and grief."
+    },
+    {
+        "id":  "grescia-estabridis",
+        "name":  "Grescia Estabridis",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Grescia%20Estabridis%20.webp",
+        "title":  "MHC-LP",
+        "location":  "CT",
+        "specialties":  [
+                            "Eating Disorders",
+                            "Relationships",
+                            "Life Transitions"
+                        ],
+        "languages":  [
+                          "English",
+                          "Spanish"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Couples"
+                         ],
+        "price":  160,
+        "availability":  "Available",
+        "summary":  "Provides advocacy, psychoeducation, and evidence-based care for individuals, couples, and families, with clinical experience spanning anxiety, depression, eating disorders, relationship challenges, and major life transitions."
+    },
+    {
+        "id":  "hamilton-esteban",
+        "name":  "Hamilton Esteban",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Hamilton%20Esteban%20.webp",
+        "title":  "MHC",
+        "location":  "NY",
+        "specialties":  [
+                            "Substance Use",
+                            "Career Changes",
+                            "Psychodynamic"
+                        ],
+        "languages":  [
+                          "English",
+                          "Spanish"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Psychodynamic"
+                         ],
+        "price":  170,
+        "availability":  "Waitlist",
+        "summary":  "Has experience in the nonprofit sector with adults and adolescents, using client-centered and psychodynamic approaches to support substance use recovery, career changes, and difficult adjustment periods."
+    },
+    {
+        "id":  "ahmbria-garner",
+        "name":  "Ahmbria Garner",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Ahmbria%20Garner%20.webp",
+        "title":  "MHC-LP",
+        "location":  "NV",
+        "specialties":  [
+                            "Validation",
+                            "Stress",
+                            "Life Transitions"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Supportive"
+                         ],
+        "price":  150,
+        "availability":  "Available",
+        "summary":  "Believes everyone deserves to feel supported, validated, listened to, and safe while moving through the highs and lows of life, especially during overwhelming seasons."
+    },
+    {
+        "id":  "tyisha-gaskin",
+        "name":  "Tyisha Gaskin",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Tyisha%20Gaskin%20.webp",
+        "title":  "LMHC",
+        "location":  "FL",
+        "specialties":  [
+                            "Self-Esteem",
+                            "Trauma",
+                            "CBT"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "CBT"
+                         ],
+        "price":  210,
+        "availability":  "Limited",
+        "summary":  "Advocates for self-love and self-acceptance, helping clients identify and remove barriers like low self-worth, trauma, abuse, and chronic stress through discovery, reflection, and CBT."
+    },
+    {
+        "id":  "laticia-grenada",
+        "name":  "Laticia Grenada",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Laticia%20Grenada%20.webp",
+        "title":  "LMHC",
+        "location":  "NY",
+        "specialties":  [
+                            "ADHD",
+                            "Trauma",
+                            "Identity Exploration"
+                        ],
+        "languages":  [
+                          "English",
+                          "Spanish"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Play Therapy"
+                         ],
+        "price":  165,
+        "availability":  "Available",
+        "summary":  "Takes a person-centered approach and works with children, adolescents, adults, parents, and families across depression, anxiety, ADHD, autism, postpartum issues, trauma, relationship concerns, and identity exploration."
+    },
+    {
+        "id":  "veronica-guijarro",
+        "name":  "Veronica Guijarro",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Veronica%20Guijarro.jpg",
+        "title":  "LMHC",
+        "location":  "NJ",
+        "specialties":  [
+                            "Anxiety",
+                            "Relationships",
+                            "Self-Exploration"
+                        ],
+        "languages":  [
+                          "English",
+                          "Spanish"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "DBT"
+                         ],
+        "price":  175,
+        "availability":  "Limited",
+        "summary":  "Creates a safe, compassionate space for growth and self-exploration, drawing from CBT, DBT, mindfulness, motivational interviewing, and identity-affirming work across a wide range of client needs."
+    },
+    {
+        "id":  "margaret-gonzalez",
+        "name":  "Margaret Gonzalez",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/Margaret%20Gonzalez.jpeg",
+        "title":  "MHC-I",
+        "location":  "NY",
+        "specialties":  [
+                            "School Counseling",
+                            "Youth Support",
+                            "Culturally Responsive Care"
+                        ],
+        "languages":  [
+                          "English",
+                          "Spanish"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Supportive"
+                         ],
+        "price":  155,
+        "availability":  "Available",
+        "summary":  "Is a bilingual school counselor in the Bronx and graduate student in mental health counseling, passionate about creating safe, supportive, and culturally responsive spaces where individuals feel heard and empowered."
+    },
+    {
+        "id":  "kortney-grayson",
+        "name":  "Kortney Grayson",
+        "image":  "https://img1.wsimg.com/isteam/ip/be3b4275-20eb-4372-92a9-bcc3a138027c/KortneyGrayson.png",
+        "title":  "MFT-I",
+        "location":  "NY",
+        "specialties":  [
+                            "Relationships",
+                            "Families",
+                            "Personal Growth"
+                        ],
+        "languages":  [
+                          "English"
+                      ],
+        "therapyTypes":  [
+                             "Individual",
+                             "Couples"
+                         ],
+        "price":  185,
+        "availability":  "Limited",
+        "summary":  "Practices marriage and family therapy with compassion, curiosity, and a collaborative style, helping clients strengthen relationships, build tools for change, and feel seen, supported, and empowered."
+    }
+]
