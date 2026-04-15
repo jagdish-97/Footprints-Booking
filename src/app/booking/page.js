@@ -411,7 +411,7 @@ export default function BookingPage() {
                     </a>
                     <a
                         href="/"
-                        className="inline-flex items-center rounded-full border border-rosewood/15 bg-white px-4 py-2 text-sm font-semibold text-rosewood transition hover:-translate-y-0.5 hover:bg-rosewood hover:text-white"
+                        className="inline-flex items-center rounded-full border border-rosewood/15 bg-white px-4 py-2 text-sm font-semibold text-rosewood transition hover:-translate-y-0.5 hover:bg-[#6f2143] hover:text-white"
                     >
                         Back to therapists
                     </a>
