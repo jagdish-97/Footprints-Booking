@@ -399,7 +399,7 @@ export default function BookingPage() {
             </div>
 
             <header className="border-b border-white/60 bg-white/70 backdrop-blur-xl">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
+                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8 bg-[#fae8e1]">
                     <a href="/" className="flex items-center gap-3">
                         <div className="h-11 w-11 rounded-2xl bg-[#ffe4e8] object-cover shadow-md" />
                         <div>
