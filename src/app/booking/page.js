@@ -687,7 +687,7 @@ export default function BookingPage() {
                         </div>
 
                         <form id="booking-form" className="mt-8 space-y-5" onSubmit={handleBookingSubmit} noValidate>
-                            <input type="hidden" name="therapist_id" value={therapistId} />
+                            <input type="hidden" name="therapist_id" value={therapist?.id || ""} />
                             <div className={`${formStatus ? "block" : "hidden"} rounded-3xl border border-[#f3c0c8] bg-[#fff2f4] px-4 py-3 text-sm text-[#8b274e]`}>
                                 {formStatus}
                             </div>
