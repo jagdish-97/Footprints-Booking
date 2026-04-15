@@ -398,7 +398,7 @@ export default function BookingPage() {
                 <div className="absolute bottom-0 left-1/4 h-72 w-72 rounded-full bg-[#e2efe8] blur-3xl opacity-70" />
             </div>
 
-            <header className="border-b border-white/60 bg-white/70 backdrop-blur-xl bg-[#fae8e1]">
+            <header className="border-b border-white bg-[#fae8e1]">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
                     <a href="/" className="flex items-center gap-3">
                         <div className="h-11 w-11 rounded-2xl bg-[#ffe4e8] object-cover shadow-md" />
