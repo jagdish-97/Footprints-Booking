@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 // 🔹 Helper: Convert rows into { date: [times] }
 function normalizeRows(rows) {
@@ -62,6 +61,7 @@ export async function GET(request) {
 // ✅ POST BOOKING + EMAILS
 export async function POST(request) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const body = await request.json();
 
     const {
