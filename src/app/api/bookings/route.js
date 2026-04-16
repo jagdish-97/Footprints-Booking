@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "../../../lib/supabase";
-
+import { supabase } from "@/lib/supabase";
 // 🔹 Helper: Convert rows into { date: [times] }
 function normalizeRows(rows) {
   return rows.reduce((acc, row) => {
@@ -78,9 +77,17 @@ export async function POST(request) {
   try {
     const body = await request.json();
 
-    const { therapistId, dateKey, time, name, email, phone, contactMethod } = body;
+    const {
+      therapistId,
+      dateKey,
+      time,
+      name,
+      email,
+      phone,
+      contactMethod,
+    } = body;
 
-    // 🔴 Validate input
+    // ✅ Validate input
     if (!therapistId || !dateKey || !time || !name || !email || !phone || !contactMethod) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -88,31 +95,7 @@ export async function POST(request) {
       );
     }
 
-    // 🔴 Check if slot already booked (important)
-    const { data: existing, error: checkError } = await supabase
-      .from("bookings")
-      .select("id")
-      .eq("therapist_id", therapistId)
-      .eq("date", dateKey)
-      .eq("time", time)
-      .maybeSingle();
-
-    if (checkError) {
-      console.error("CHECK SLOT ERROR:", checkError);
-      return NextResponse.json(
-        { error: checkError.message },
-        { status: 500 }
-      );
-    }
-
-    if (existing) {
-      return NextResponse.json(
-        { error: "This time slot is already booked." },
-        { status: 409 }
-      );
-    }
-
-    // ✅ Insert booking
+    // ✅ Insert directly (DB constraint will handle duplicates)
     const { data, error } = await supabase
       .from("bookings")
       .insert([
@@ -128,8 +111,17 @@ export async function POST(request) {
       ])
       .select();
 
+    // 🔴 Handle errors
     if (error) {
-      console.error("INSERT ERROR FULL:", error);
+      console.error("INSERT ERROR:", error);
+
+      // 🔥 UNIQUE constraint error (duplicate slot)
+      if (error.code === "23505") {
+        return NextResponse.json(
+          { error: "This time slot is already booked." },
+          { status: 409 }
+        );
+      }
 
       return NextResponse.json(
         {
@@ -145,6 +137,7 @@ export async function POST(request) {
       success: true,
       data,
     });
+
   } catch (err) {
     console.error("UNEXPECTED POST ERROR:", err);
 

@@ -57,6 +57,7 @@ export default function BookingPage() {
     const [formErrors, setFormErrors] = useState({});
     const [formStatus, setFormStatus] = useState("");
     const [confirmation, setConfirmation] = useState({ visible: false, text: "" });
+    const [submitting, setSubmitting] = useState(false);
     const detailsPanelRef = useRef(null);
 
     const selectedDay = useMemo(
@@ -208,6 +209,10 @@ export default function BookingPage() {
 
     const handleBookingSubmit = async (event) => {
         event.preventDefault();
+
+        if (submitting) return; // ✅ prevent double click
+
+        setSubmitting(true); // ✅ start loading
         setFormStatus("");
         setConfirmation({ visible: false, text: "" });
 
@@ -215,19 +220,23 @@ export default function BookingPage() {
             setFormStatus(
                 "Please complete the required fields before confirming the consultation request."
             );
+            setSubmitting(false); // ✅ reset
             return;
         }
 
         if (!selectedDay || !selectedDay.slots.includes(selectedTime)) {
             resolveBookingConflict();
+            setSubmitting(false); // ✅ reset
             return;
-        }    
+        }
 
         try {
             await postBookedSlot(therapist.id, selectedDateKey, selectedTime, formFields);
+
             updateAvailabilityAfterBooking(selectedDateKey, selectedTime);
 
             const clientName = formFields.clientName.trim() || "The client";
+
             setConfirmation({
                 visible: true,
                 text: `${clientName} is set for ${selectedDay.fullLabel} at ${selectedTime} with ${therapist.name}. That time has now been reserved and will not appear again for other clients.`,
@@ -239,6 +248,8 @@ export default function BookingPage() {
             setFormStatus(
                 "Unable to complete the booking request. Please try again in a moment."
             );
+        } finally {
+            setSubmitting(false); // ✅ ALWAYS reset
         }
     };
 
@@ -281,7 +292,13 @@ export default function BookingPage() {
             return next;
         });
 
-        setOrderedDates((prev) => prev.filter((key) => key !== dateKey));
+        setOrderedDates((prev) => {
+            const day = availabilityByDate[dateKey];
+            if (!day || day.slots.length <= 1) {
+                return prev.filter((key) => key !== dateKey);
+            }
+            return prev;
+        });
     };
 
     const findNextAvailableSlot = (startDateKey) => {
@@ -786,14 +803,14 @@ export default function BookingPage() {
 
                             <button
                                 type="submit"
-                                disabled={!detailsEnabled}
+                                disabled={!detailsEnabled || submitting}
                                 className={`w-full rounded-full px-6 py-4 text-sm font-bold text-white transition 
-    ${detailsEnabled
+    ${detailsEnabled && !submitting
                                         ? "bg-[rgb(111,33,67)] hover:-translate-y-0.5"
                                         : "cursor-not-allowed bg-[#dfc2c8] text-[#8f7078]"
                                     }`}
                             >
-                                Confirm consultation request
+                                {submitting ? "Booking..." : "Confirm consultation request"}
                             </button>
                         </form>
 
