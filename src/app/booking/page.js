@@ -221,7 +221,7 @@ export default function BookingPage() {
         if (!selectedDay || !selectedDay.slots.includes(selectedTime)) {
             resolveBookingConflict();
             return;
-        }
+        }    
 
         try {
             await postBookedSlot(therapist.id, selectedDateKey, selectedTime, formFields);
@@ -854,11 +854,13 @@ async function postBookedSlot(therapistId, dateKey, time, formFields) {
         }),
     });
 
+    const payload = await response.json().catch(() => null);
     if (!response.ok) {
-        throw new Error("Could not save booking.");
+        const message = payload?.error || payload?.details || "Could not save booking.";
+        throw new Error(message);
     }
 
-    return await response.json();
+    return payload;
 }
 
 function resolveTherapistFromQuery(therapists) {
