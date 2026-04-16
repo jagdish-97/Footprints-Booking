@@ -1,101 +1,159 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../../lib/supabase";
 
+// 🔹 Helper: Convert rows into { date: [times] }
 function normalizeRows(rows) {
   return rows.reduce((acc, row) => {
     const key = row.date;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
+    if (!acc[key]) acc[key] = [];
     acc[key].push(row.time);
     return acc;
   }, {});
 }
 
+// ✅ GET BOOKINGS
 export async function GET(request) {
-  const url = new URL(request.url);
-  const therapistId = url.searchParams.get("therapistId");
+  try {
+    const url = new URL(request.url);
+    const therapistId = url.searchParams.get("therapistId");
 
-  if (therapistId) {
+    if (therapistId) {
+      const { data, error } = await supabase
+        .from("bookings")
+        .select("date, time")
+        .eq("therapist_id", therapistId)
+        .order("date", { ascending: true })
+        .order("time", { ascending: true });
+
+      if (error) {
+        console.error("GET ERROR (single therapist):", error);
+        return NextResponse.json(
+          { error: error.message, details: error.details, code: error.code },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json(normalizeRows(data));
+    }
+
+    // 🔹 Get all bookings
     const { data, error } = await supabase
       .from("bookings")
-      .select("date, time")
-      .eq("therapist_id", therapistId)
+      .select("therapist_id, date, time")
+      .order("therapist_id", { ascending: true })
       .order("date", { ascending: true })
       .order("time", { ascending: true });
 
     if (error) {
-      console.error("Error fetching bookings:", error);
+      console.error("GET ERROR (all bookings):", error);
       return NextResponse.json(
-        { error: "Failed to fetch bookings", details: error.message, code: error.code },
+        { error: error.message, details: error.details, code: error.code },
         { status: 500 }
       );
     }
 
-    return NextResponse.json(normalizeRows(data));
-  }
+    const bookings = data.reduce((acc, row) => {
+      const therapistBookings = acc[row.therapist_id] || {};
+      const key = row.date;
 
-  const { data, error } = await supabase
-    .from("bookings")
-    .select("therapist_id, date, time")
-    .order("therapist_id", { ascending: true })
-    .order("date", { ascending: true })
-    .order("time", { ascending: true });
+      if (!therapistBookings[key]) therapistBookings[key] = [];
+      therapistBookings[key].push(row.time);
 
-  if (error) {
-    console.error("Error fetching all bookings:", error);
+      acc[row.therapist_id] = therapistBookings;
+      return acc;
+    }, {});
+
+    return NextResponse.json(bookings);
+  } catch (err) {
+    console.error("UNEXPECTED GET ERROR:", err);
     return NextResponse.json(
-      { error: "Failed to fetch bookings", details: error.message, code: error.code },
+      { error: "Unexpected server error", details: err.message },
       { status: 500 }
     );
   }
-
-  const bookings = data.reduce((acc, row) => {
-    const therapistBookings = acc[row.therapist_id] || {};
-    const key = row.date;
-
-    if (!therapistBookings[key]) {
-      therapistBookings[key] = [];
-    }
-
-    therapistBookings[key].push(row.time);
-    acc[row.therapist_id] = therapistBookings;
-    return acc;
-  }, {});
-
-  return NextResponse.json(bookings);
 }
 
+// ✅ POST BOOKING
 export async function POST(request) {
-  const body = await request.json();
-  const { therapistId, dateKey, time, name, email, phone, contactMethod } = body;
+  try {
+    const body = await request.json();
 
-  if (!therapistId || !dateKey || !time || !name || !email || !phone || !contactMethod) {
-    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-  }
+    const { therapistId, dateKey, time, name, email, phone, contactMethod } = body;
 
-  const { data, error } = await supabase
-    .from("bookings")
-    .insert([
-      {
-        therapist_id: therapistId,
-        date: dateKey,
-        time,
-        name,
-        email,
-        phone,
-        contact_method: contactMethod,
-      },
-    ])
-    .select();
+    // 🔴 Validate input
+    if (!therapistId || !dateKey || !time || !name || !email || !phone || !contactMethod) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
 
-  if (error) {
-    console.error("Error inserting booking:", error);
+    // 🔴 Check if slot already booked (important)
+    const { data: existing, error: checkError } = await supabase
+      .from("bookings")
+      .select("id")
+      .eq("therapist_id", therapistId)
+      .eq("date", dateKey)
+      .eq("time", time)
+      .maybeSingle();
+
+    if (checkError) {
+      console.error("CHECK SLOT ERROR:", checkError);
+      return NextResponse.json(
+        { error: checkError.message },
+        { status: 500 }
+      );
+    }
+
+    if (existing) {
+      return NextResponse.json(
+        { error: "This time slot is already booked." },
+        { status: 409 }
+      );
+    }
+
+    // ✅ Insert booking
+    const { data, error } = await supabase
+      .from("bookings")
+      .insert([
+        {
+          therapist_id: therapistId,
+          date: dateKey,
+          time,
+          name,
+          email,
+          phone,
+          contact_method: contactMethod,
+        },
+      ])
+      .select();
+
+    if (error) {
+      console.error("INSERT ERROR FULL:", error);
+
+      return NextResponse.json(
+        {
+          error: error.message,
+          details: error.details,
+          code: error.code,
+        },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      data,
+    });
+  } catch (err) {
+    console.error("UNEXPECTED POST ERROR:", err);
+
     return NextResponse.json(
-      { error: "Failed to save booking", details: error.message, code: error.code },
+      {
+        error: "Unexpected server error",
+        details: err.message,
+      },
       { status: 500 }
     );
   }
-
-  return NextResponse.json({ success: true, data });
 }
