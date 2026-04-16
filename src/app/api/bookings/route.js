@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 // 🔹 Helper: Convert rows into { date: [times] }
 function normalizeRows(rows) {
   return rows.reduce((acc, row) => {
@@ -25,9 +29,9 @@ export async function GET(request) {
         .order("time", { ascending: true });
 
       if (error) {
-        console.error("GET ERROR (single therapist):", error);
+        console.error("GET ERROR:", error);
         return NextResponse.json(
-          { error: error.message, details: error.details, code: error.code },
+          { error: error.message },
           { status: 500 }
         );
       }
@@ -35,44 +39,27 @@ export async function GET(request) {
       return NextResponse.json(normalizeRows(data));
     }
 
-    // 🔹 Get all bookings
     const { data, error } = await supabase
       .from("bookings")
-      .select("therapist_id, date, time")
-      .order("therapist_id", { ascending: true })
-      .order("date", { ascending: true })
-      .order("time", { ascending: true });
+      .select("therapist_id, date, time");
 
     if (error) {
-      console.error("GET ERROR (all bookings):", error);
-      return NextResponse.json(
-        { error: error.message, details: error.details, code: error.code },
-        { status: 500 }
-      );
+      console.error("GET ALL ERROR:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const bookings = data.reduce((acc, row) => {
-      const therapistBookings = acc[row.therapist_id] || {};
-      const key = row.date;
+    return NextResponse.json(data);
 
-      if (!therapistBookings[key]) therapistBookings[key] = [];
-      therapistBookings[key].push(row.time);
-
-      acc[row.therapist_id] = therapistBookings;
-      return acc;
-    }, {});
-
-    return NextResponse.json(bookings);
   } catch (err) {
     console.error("UNEXPECTED GET ERROR:", err);
     return NextResponse.json(
-      { error: "Unexpected server error", details: err.message },
+      { error: "Unexpected server error" },
       { status: 500 }
     );
   }
 }
 
-// ✅ POST BOOKING
+// ✅ POST BOOKING + EMAILS
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -87,7 +74,7 @@ export async function POST(request) {
       contactMethod,
     } = body;
 
-    // ✅ Validate input
+    // 🔴 Validate input
     if (!therapistId || !dateKey || !time || !name || !email || !phone || !contactMethod) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -95,7 +82,7 @@ export async function POST(request) {
       );
     }
 
-    // ✅ Insert directly (DB constraint will handle duplicates)
+    // ✅ Insert booking
     const { data, error } = await supabase
       .from("bookings")
       .insert([
@@ -111,11 +98,10 @@ export async function POST(request) {
       ])
       .select();
 
-    // 🔴 Handle errors
+    // 🔴 Handle DB errors
     if (error) {
       console.error("INSERT ERROR:", error);
 
-      // 🔥 UNIQUE constraint error (duplicate slot)
       if (error.code === "23505") {
         return NextResponse.json(
           { error: "This time slot is already booked." },
@@ -124,15 +110,53 @@ export async function POST(request) {
       }
 
       return NextResponse.json(
-        {
-          error: error.message,
-          details: error.details,
-          code: error.code,
-        },
+        { error: error.message },
         { status: 500 }
       );
     }
 
+    // ✅ SEND EMAILS (ADMIN + USER)
+    try {
+      // 📩 Admin Email
+      await resend.emails.send({
+        from: "onboarding@resend.dev",
+        to: "jaggu3526@gmail.com", // 🔴 CHANGE THIS
+        subject: "New Booking Received",
+        html: `
+          <h2>New Booking</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <p><strong>Therapist ID:</strong> ${therapistId}</p>
+          <p><strong>Date:</strong> ${dateKey}</p>
+          <p><strong>Time:</strong> ${time}</p>
+          <p><strong>Contact Method:</strong> ${contactMethod}</p>
+        `,
+      });
+
+      // 📧 User Email
+      await resend.emails.send({
+        from: "onboarding@resend.dev",
+        to: email,
+        subject: "Your Consultation is Confirmed",
+        html: `
+          <h2>Booking Confirmed</h2>
+          <p>Hi ${name},</p>
+          <p>Your consultation has been successfully booked.</p>
+          <p><strong>Date:</strong> ${dateKey}</p>
+          <p><strong>Time:</strong> ${time}</p>
+          <p>We will contact you via ${contactMethod}.</p>
+          <br/>
+          <p>Thank you,<br/>Footprints Team</p>
+        `,
+      });
+
+    } catch (mailError) {
+      console.error("EMAIL ERROR:", mailError);
+      // ❗ Don't fail booking if email fails
+    }
+
+    // ✅ FINAL RESPONSE
     return NextResponse.json({
       success: true,
       data,
