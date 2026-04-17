@@ -389,7 +389,7 @@ export default function BookingPage() {
                 <div className="text-center max-w-md">
                     <p className="text-lg font-semibold text-red-600 mb-4">Error</p>
                     <p className="text-base mb-6">{error}</p>
-                    <a href="/" className="inline-block px-6 py-3 bg-rosewood text-white rounded-full hover:bg-opacity-90 transition">
+                    <a href="/clinical-staff.html" className="inline-block px-6 py-3 bg-rosewood text-white rounded-full hover:bg-opacity-90 transition">
                         Back to Therapists
                     </a>
                 </div>
