@@ -417,7 +417,7 @@ export default function BookingPage() {
 
             <header className="border-b border-white bg-[#fae8e1]">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
-                    <a href="/" className="flex items-center gap-3">
+                    <a href="https://meetfootprints.com/index.html" className="flex items-center gap-3">
                         <div className="h-11 w-11 rounded-2xl bg-[#ffe4e8] object-cover shadow-md" />
                         <div>
                             <p className="font-heading text-lg font-extrabold tracking-tight text-rosewood">
@@ -427,7 +427,7 @@ export default function BookingPage() {
                         </div>
                     </a>
                     <a
-                        href="/"
+                        href="https://meetfootprints.com/clinical-staff.html"
                         className="inline-flex items-center rounded-full border border-rosewood/15 bg-white px-4 py-2 text-sm font-semibold text-rosewood transition hover:-translate-y-0.5 hover:bg-[#6f2143] hover:text-white"
                     >
                         Back to therapists
