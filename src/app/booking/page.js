@@ -418,7 +418,7 @@ export default function BookingPage() {
             <header className="border-b border-white bg-[#fae8e1]">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
                     <a href="https://meetfootprints.com/index.html" className="flex items-center gap-3">
-                        <div className="h-11 w-11 rounded-2xl bg-[#ffe4e8] object-cover shadow-md" />
+                      
                         <div>
                             <p className="font-heading text-lg font-extrabold tracking-tight text-rosewood">
                                 Footprints to Feel Better
