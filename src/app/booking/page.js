@@ -85,12 +85,12 @@ export default function BookingPage() {
                 setLoading(true);
                 const therapists = await loadBookingTherapists();
                 const selectedTherapist = resolveTherapistFromQuery(therapists);
-                
+
                 if (!selectedTherapist) {
                     setError("No therapist available. Please try again.");
                     return;
                 }
-                
+
                 const bookedSlots = await fetchBookedSlots(selectedTherapist.id);
                 const availability = buildAvailabilityMap(selectedTherapist, bookedSlots);
                 const ordered = Object.keys(availability)
@@ -418,7 +418,14 @@ export default function BookingPage() {
             <header className="border-b border-white bg-[#fae8e1]">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
                     <a href="https://meetfootprints.com/index.html" className="flex items-center gap-3">
-                        <div className="h-11 w-11 rounded-2xl bg-[#ffe4e8] object-cover shadow-md" />
+                        <div className="relative h-11 w-11 rounded-2xl bg-[#ffe4e8] shadow-md overflow-hidden">
+                            <Image
+                                src="./logo.png"
+                                alt="Therapist Profile"
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
                         <div>
                             <p className="font-heading text-lg font-extrabold tracking-tight text-rosewood">
                                 Footprints to Feel Better
@@ -524,7 +531,7 @@ export default function BookingPage() {
                                 disabled={!canContinue}
                                 className={`mt-6 w-full rounded-full px-5 py-3.5 text-sm font-bold text-white transition 
     ${canContinue
-                                    ? "bg-[rgb(111,33,67)] hover:-translate-y-0.5 cursor-pointer"
+                                        ? "bg-[rgb(111,33,67)] hover:-translate-y-0.5 cursor-pointer"
                                         : "cursor-not-allowed bg-[#dfc2c8] text-[#8f7078]"
                                     }`}
                             >
@@ -594,8 +601,8 @@ export default function BookingPage() {
                                             type="button"
                                             onClick={() => handleSelectDate(dateKey)}
                                             className={`rounded-[1.75rem] border p-5 text-left transition ${isSelected
-                                                    ? "border-[#6f2143] bg-[#6f2143] text-white shadow-glow"
-                                                    : "border-[#edd9dd] bg-[#fffafa] hover:-translate-y-0.5 hover:border-[#6f2143]/40 hover:bg-white"
+                                                ? "border-[#6f2143] bg-[#6f2143] text-white shadow-glow"
+                                                : "border-[#edd9dd] bg-[#fffafa] hover:-translate-y-0.5 hover:border-[#6f2143]/40 hover:bg-white"
                                                 }`}
                                         >
                                             <span
@@ -621,8 +628,8 @@ export default function BookingPage() {
 
                                             <span
                                                 className={`mt-3 inline-flex rounded-full px-3 py-1 text-xs font-semibold ${isSelected
-                                                        ? "bg-white/15 text-white"
-                                                        : "bg-[#fff0f4] text-[#6f2143]"
+                                                    ? "bg-white/15 text-white"
+                                                    : "bg-[#fff0f4] text-[#6f2143]"
                                                     }`}
                                             >
                                                 {dayData.slots.length} open
@@ -649,8 +656,8 @@ export default function BookingPage() {
                                             type="button"
                                             onClick={() => handleSelectTime(slot)}
                                             className={`rounded-[1.5rem] border p-4 text-left transition ${selectedTime === slot
-                                                    ? "border-[#6f2143] bg-[#6f2143] text-white shadow-glow"
-                                                    : "border-[#edd9dd] bg-[#fffafa] hover:-translate-y-0.5 hover:border-[#6f2143]/40 hover:bg-white"
+                                                ? "border-[#6f2143] bg-[#6f2143] text-white shadow-glow"
+                                                : "border-[#edd9dd] bg-[#fffafa] hover:-translate-y-0.5 hover:border-[#6f2143]/40 hover:bg-white"
                                                 }`}
                                         >
                                             <span className="font-heading text-lg font-bold">{slot}</span>
@@ -806,7 +813,7 @@ export default function BookingPage() {
                                 disabled={!detailsEnabled || submitting}
                                 className={`w-full rounded-full px-6 py-4 text-sm font-bold text-white transition 
     ${detailsEnabled && !submitting
-                                    ? "bg-[rgb(111,33,67)] hover:-translate-y-0.5 cursor-pointer"
+                                        ? "bg-[rgb(111,33,67)] hover:-translate-y-0.5 cursor-pointer"
                                         : "cursor-not-allowed bg-[#dfc2c8] text-[#8f7078]"
                                     }`}
                             >
@@ -888,18 +895,18 @@ function resolveTherapistFromQuery(therapists) {
     try {
         const params = new URLSearchParams(window.location.search);
         const therapistId = params.get("therapist");
-        
+
         if (!therapistId) {
             console.warn("No therapist ID in URL, using first therapist");
             return therapists?.[0] || null;
         }
-        
+
         const found = therapists?.find((item) => item.id === therapistId);
         if (!found) {
             console.warn(`Therapist ${therapistId} not found, using first therapist`);
             return therapists?.[0] || null;
         }
-        
+
         return found;
     } catch (error) {
         console.error("Error resolving therapist from query:", error);
