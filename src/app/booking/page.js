@@ -524,7 +524,7 @@ export default function BookingPage() {
                                 disabled={!canContinue}
                                 className={`mt-6 w-full rounded-full px-5 py-3.5 text-sm font-bold text-white transition 
     ${canContinue
-                                        ? "bg-[rgb(111,33,67)] hover:-translate-y-0.5"
+                                    ? "bg-[rgb(111,33,67)] hover:-translate-y-0.5 cursor-pointer"
                                         : "cursor-not-allowed bg-[#dfc2c8] text-[#8f7078]"
                                     }`}
                             >
@@ -806,7 +806,7 @@ export default function BookingPage() {
                                 disabled={!detailsEnabled || submitting}
                                 className={`w-full rounded-full px-6 py-4 text-sm font-bold text-white transition 
     ${detailsEnabled && !submitting
-                                        ? "bg-[rgb(111,33,67)] hover:-translate-y-0.5"
+                                    ? "bg-[rgb(111,33,67)] hover:-translate-y-0.5 cursor-pointer"
                                         : "cursor-not-allowed bg-[#dfc2c8] text-[#8f7078]"
                                     }`}
                             >
