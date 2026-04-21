@@ -122,7 +122,7 @@ export async function POST(request) {
         // 1. Admin Notification
         resend.emails.send({
           from: 'onboarding@resend.dev',
-          to: 'jaggu3526@gmail.com', // Admin testing email
+          to: 'jagdish@footprintstofeelbetter.com', // Admin testing email
           subject: `New Booking: ${name} with ${therapistName || "Therapist"}`,
           html: `
             <div style="font-family: sans-serif; color: #333;">
