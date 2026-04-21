@@ -136,7 +136,7 @@ export async function POST(request) {
       await Promise.all([
         transporter.sendMail({
           from: process.env.ZOHO_EMAIL,
-          to: "jaggu3536@gmail.com",
+          to: "jaggu3526@gmail.com", // Admin email
           subject: "New Booking Received",
           html: `
             <h2>New Booking Received</h2>
