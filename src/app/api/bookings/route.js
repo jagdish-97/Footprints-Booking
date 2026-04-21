@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 
 // 🔹 Helper: Convert rows into { date: [times] }
@@ -13,7 +13,10 @@ function normalizeRows(rows) {
   }, {});
 }
 
-// ✅ GET BOOKINGS
+
+// ===============================
+// 📌 GET BOOKINGS
+// ===============================
 export async function GET(request) {
   try {
     const url = new URL(request.url);
@@ -29,10 +32,7 @@ export async function GET(request) {
 
       if (error) {
         console.error("GET ERROR:", error);
-        return NextResponse.json(
-          { error: error.message },
-          { status: 500 }
-        );
+        return NextResponse.json({ error: error.message }, { status: 500 });
       }
 
       return NextResponse.json(normalizeRows(data));
@@ -58,10 +58,26 @@ export async function GET(request) {
   }
 }
 
-// ✅ POST BOOKING + EMAILS
+
+// ===============================
+// 📌 SMTP TRANSPORT (ZOHO)
+// ===============================
+const transporter = nodemailer.createTransport({
+  host: "smtp.zoho.in",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.ZOHO_EMAIL,
+    pass: process.env.ZOHO_APP_PASSWORD,
+  },
+});
+
+
+// ===============================
+// 📌 POST BOOKING + EMAILS
+// ===============================
 export async function POST(request) {
   try {
-    const resend = new Resend(process.env.RESEND_API_KEY);
     const body = await request.json();
 
     const {
@@ -82,7 +98,9 @@ export async function POST(request) {
       );
     }
 
-    // ✅ Insert booking
+    // ===============================
+    // 📌 INSERT BOOKING (SUPABASE)
+    // ===============================
     const { data, error } = await supabase
       .from("bookings")
       .insert([
@@ -98,7 +116,6 @@ export async function POST(request) {
       ])
       .select();
 
-    // 🔴 Handle DB errors
     if (error) {
       console.error("INSERT ERROR:", error);
 
@@ -115,37 +132,43 @@ export async function POST(request) {
       );
     }
 
-    // ✅ SEND EMAILS (ADMIN + USER)
+    // ===============================
+    // 📌 EMAIL: ADMIN NOTIFICATION
+    // ===============================
     try {
-      // 📩 Admin Email
-      await resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: "jaggu3526@gmail.com", // 🔴 CHANGE THIS
+      await transporter.sendMail({
+        from: `"Footprints Booking" <${process.env.ZOHO_EMAIL}>`,
+        to: "jaggu3536@gmail.com", // Admin email
         subject: "New Booking Received",
         html: `
           <h2>New Booking</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${phone}</p>
-          <p><strong>Therapist ID:</strong> ${therapistId}</p>
-          <p><strong>Date:</strong> ${dateKey}</p>
-          <p><strong>Time:</strong> ${time}</p>
-          <p><strong>Contact Method:</strong> ${contactMethod}</p>
+          <p><b>Name:</b> ${name}</p>
+          <p><b>Email:</b> ${email}</p>
+          <p><b>Phone:</b> ${phone}</p>
+          <p><b>Therapist ID:</b> ${therapistId}</p>
+          <p><b>Date:</b> ${dateKey}</p>
+          <p><b>Time:</b> ${time}</p>
+          <p><b>Contact Method:</b> ${contactMethod}</p>
         `,
       });
 
-      // 📧 User Email
-      await resend.emails.send({
-        from: "onboarding@resend.dev",
+      // ===============================
+      // 📌 EMAIL: USER CONFIRMATION
+      // ===============================
+      await transporter.sendMail({
+        from: `"Footprints Team" <${process.env.ZOHO_EMAIL}>`,
         to: email,
         subject: "Your Consultation is Confirmed",
         html: `
           <h2>Booking Confirmed</h2>
           <p>Hi ${name},</p>
           <p>Your consultation has been successfully booked.</p>
-          <p><strong>Date:</strong> ${dateKey}</p>
-          <p><strong>Time:</strong> ${time}</p>
+
+          <p><b>Date:</b> ${dateKey}</p>
+          <p><b>Time:</b> ${time}</p>
+
           <p>We will contact you via ${contactMethod}.</p>
+
           <br/>
           <p>Thank you,<br/>Footprints Team</p>
         `,
@@ -153,10 +176,12 @@ export async function POST(request) {
 
     } catch (mailError) {
       console.error("EMAIL ERROR:", mailError);
-      // ❗ Don't fail booking if email fails
+      // ❗ Booking still succeeds even if email fails
     }
 
-    // ✅ FINAL RESPONSE
+    // ===============================
+    // 📌 FINAL RESPONSE
+    // ===============================
     return NextResponse.json({
       success: true,
       data,
