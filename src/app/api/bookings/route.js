@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
-// 🔹 Helper: Convert rows into { date: [times] }
-// Logic remains identical to your original code
+// 🔹 Initialize Resend with your API Key
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 function normalizeRows(rows) {
   return rows.reduce((acc, row) => {
     const key = row.date;
@@ -14,7 +15,7 @@ function normalizeRows(rows) {
 }
 
 // ===============================
-// 📌 GET BOOKINGS
+// 📌 GET BOOKINGS (Database details untouched)
 // ===============================
 export async function GET(request) {
   try {
@@ -57,23 +58,7 @@ export async function GET(request) {
 }
 
 // ===============================
-// 📌 SMTP TRANSPORT (ZOHO - OPTIMIZED)
-// ===============================
-const transporter = nodemailer.createTransport({
-  host: "smtp.zoho.in",
-  port: 465,
-  secure: true, // TLS is more stable than SSL for serverless
-  auth: {
-    user: process.env.ZOHO_EMAIL,
-    pass: process.env.ZOHO_APP_PASSWORD,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
-
-// ===============================
-// 📌 POST BOOKING + EMAILS
+// 📌 POST BOOKING + RESEND EMAILS
 // ===============================
 export async function POST(request) {
   try {
@@ -81,6 +66,7 @@ export async function POST(request) {
 
     const {
       therapistId,
+      therapistName, // 🔹 Passed from frontend
       dateKey,
       time,
       name,
@@ -89,7 +75,7 @@ export async function POST(request) {
       contactMethod,
     } = body;
 
-    // 🔴 Validate input
+    // Validate input
     if (!therapistId || !dateKey || !time || !name || !email || !phone || !contactMethod) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -98,8 +84,7 @@ export async function POST(request) {
     }
 
     // ===============================
-    // 📌 INSERT BOOKING (SUPABASE)
-    // No changes made to DB interaction logic
+    // 📌 INSERT BOOKING (Database details untouched)
     // ===============================
     const { data, error } = await supabase
       .from("bookings")
@@ -128,51 +113,52 @@ export async function POST(request) {
     }
 
     // ===============================
-    // 📌 EMAIL: NOTIFICATIONS (FIXED)
+    // 📌 EMAIL: RESEND NOTIFICATIONS
     // ===============================
     try {
-      // Promise.all ensures both emails are fully processed 
-      // BEFORE the function ends, preventing the "Connection Closed" error.
       await Promise.all([
-        transporter.sendMail({
-          from: process.env.ZOHO_EMAIL,
-          to: "jaggu3526@gmail.com", // Admin email
-          subject: "New Booking Received",
+        // 1. Admin Notification (To intake@footprintstofeelbetter.com)
+        resend.emails.send({
+          from: 'Footprints System <intake@footprintstofeelbetter.com>',
+          to: 'jaggu3526@gmail.com',
+          subject: `New Booking: ${name} with ${therapistName || "Therapist"}`,
           html: `
-            <h2>New Booking Received</h2>
-            <p><b>Name:</b> ${name}</p>
-            <p><b>Email:</b> ${email}</p>
-            <p><b>Phone:</b> ${phone}</p>
-            <p><b>Date:</b> ${dateKey}</p>
-            <p><b>Time:</b> ${time}</p>
-            <p><b>Contact Method:</b> ${contactMethod}</p>
+            <div style="font-family: sans-serif; color: #333;">
+              <h2>New Booking Received</h2>
+              <p><b>Client Name:</b> ${name}</p>
+              <p><b>Therapist:</b> ${therapistName || "Not Specified"}</p>
+              <p><b>Date:</b> ${dateKey}</p>
+              <p><b>Time:</b> ${time}</p>
+              <p><b>Client Phone:</b> ${phone}</p>
+              <p><b>Client Email:</b> ${email}</p>
+              <p><b>Preferred Contact:</b> ${contactMethod}</p>
+            </div>
           `,
         }),
-        transporter.sendMail({
-          from: process.env.ZOHO_EMAIL,
+        // 2. Client Confirmation
+        resend.emails.send({
+          from: 'Footprints Team <intake@footprintstofeelbetter.com>',
           to: email,
           subject: "Your Consultation is Confirmed",
           html: `
-            <h2>Booking Confirmed</h2>
-            <p>Hi ${name},</p>
-            <p>Your consultation has been successfully booked.</p>
-            <p><b>Date:</b> ${dateKey}</p>
-            <p><b>Time:</b> ${time}</p>
-            <p>We will contact you via ${contactMethod}.</p>
-            <br/>
-            <p>Thank you,<br/>Footprints Team</p>
+            <div style="font-family: sans-serif; color: #333; max-width: 600px;">
+              <h2>Booking Confirmed</h2>
+              <p>Hi ${name},</p>
+              <p>Your consultation with <b>${therapistName || "our therapist"}</b> is confirmed.</p>
+              <p><b>Date:</b> ${dateKey}</p>
+              <p><b>Time:</b> ${time}</p>
+              <p>We will contact you via ${contactMethod}.</p>
+              <br/>
+              <p>Thank you,<br/>Footprints Team</p>
+            </div>
           `,
         }),
       ]);
-      console.log("✅ Emails sent successfully");
+      console.log("✅ Emails sent successfully via Resend");
     } catch (mailError) {
       console.error("❌ EMAIL ERROR:", mailError);
-      // DB remains updated even if mail fails
     }
 
-    // ===============================
-    // 📌 FINAL RESPONSE
-    // ===============================
     return NextResponse.json({
       success: true,
       data,
