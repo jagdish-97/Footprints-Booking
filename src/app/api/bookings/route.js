@@ -116,11 +116,13 @@ export async function POST(request) {
     // 📌 EMAIL: RESEND NOTIFICATIONS
     // ===============================
     try {
-      await Promise.all([
-        // 1. Admin Notification (To intake@footprintstofeelbetter.com)
+      // Promise.all ensures both emails are fully processed 
+      // before the serverless function terminates.
+      const emailResponses = await Promise.all([
+        // 1. Admin Notification
         resend.emails.send({
           from: 'Footprints System <intake@footprintstofeelbetter.com>',
-          to: 'jaggu3526@gmail.com',
+          to: 'jaggu3526@gmail.com', // Admin testing email
           subject: `New Booking: ${name} with ${therapistName || "Therapist"}`,
           html: `
             <div style="font-family: sans-serif; color: #333;">
@@ -154,9 +156,11 @@ export async function POST(request) {
           `,
         }),
       ]);
-      console.log("✅ Emails sent successfully via Resend");
+
+      // Log the actual response from Resend for verification
+      console.log("✅ Resend Response:", JSON.stringify(emailResponses));
     } catch (mailError) {
-      console.error("❌ EMAIL ERROR:", mailError);
+      console.error("❌ RESEND ERROR:", mailError);
     }
 
     return NextResponse.json({
