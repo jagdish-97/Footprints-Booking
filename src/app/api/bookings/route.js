@@ -121,7 +121,7 @@ export async function POST(request) {
       const emailResponses = await Promise.all([
         // 1. Admin Notification
         resend.emails.send({
-          from: 'onboarding@resend.dev',
+          from: 'Footprints <intake@footprintstofeelbetter.com>',
           to: 'jagdish@footprintstofeelbetter.com', // Admin testing email
           subject: `New Booking: ${name} with ${therapistName || "Therapist"}`,
           html: `
@@ -139,7 +139,7 @@ export async function POST(request) {
         }),
         // 2. Client Confirmation
         resend.emails.send({
-          from: 'onboarding@resend.dev',
+          from: 'Footprints <intake@footprintstofeelbetter.com>',
           to: email,
           subject: "Your Consultation is Confirmed",
           html: `
