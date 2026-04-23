@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { Resend } from "resend";
-
-// 🔹 Initialize Resend with your API Key
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from "nodemailer"; // 🔹 Switched from Resend to Nodemailer
 
 function normalizeRows(rows) {
   return rows.reduce((acc, row) => {
@@ -58,7 +55,7 @@ export async function GET(request) {
 }
 
 // ===============================
-// 📌 POST BOOKING + RESEND EMAILS
+// 📌 POST BOOKING + SMTP EMAILS
 // ===============================
 export async function POST(request) {
   try {
@@ -66,7 +63,7 @@ export async function POST(request) {
 
     const {
       therapistId,
-      therapistName, // 🔹 Passed from frontend
+      therapistName,
       dateKey,
       time,
       name,
@@ -113,54 +110,69 @@ export async function POST(request) {
     }
 
     // ===============================
-    // 📌 EMAIL: RESEND NOTIFICATIONS
+    // 📌 EMAIL: NODEMAILER (HOSTINGER SMTP)
     // ===============================
     try {
-      // Promise.all ensures both emails are fully processed 
-      // before the serverless function terminates.
-      const emailResponses = await Promise.all([
-        // 1. Admin Notification
-        resend.emails.send({
-          from: 'Footprints <intake@footprintstofeelbetter.com>',
-          to: 'jagdish@footprintstofeelbetter.com', // Admin testing email
-          subject: `New Booking: ${name} with ${therapistName || "Therapist"}`,
-          html: `
-            <div style="font-family: sans-serif; color: #333;">
-              <h2>New Booking Received</h2>
-              <p><b>Client Name:</b> ${name}</p>
-              <p><b>Therapist:</b> ${therapistName || "Not Specified"}</p>
-              <p><b>Date:</b> ${dateKey}</p>
-              <p><b>Time:</b> ${time}</p>
-              <p><b>Client Phone:</b> ${phone}</p>
-              <p><b>Client Email:</b> ${email}</p>
-              <p><b>Preferred Contact:</b> ${contactMethod}</p>
-            </div>
-          `,
-        }),
-        // 2. Client Confirmation
-        resend.emails.send({
-          from: 'Footprints <intake@footprintstofeelbetter.com>',
-          to: email,
-          subject: "Your Consultation is Confirmed",
-          html: `
-            <div style="font-family: sans-serif; color: #333; max-width: 600px;">
-              <h2>Booking Confirmed</h2>
-              <p>Hi ${name},</p>
-              <p>Your consultation with <b>${therapistName || "our therapist"}</b> is confirmed.</p>
-              <p><b>Date:</b> ${dateKey}</p>
-              <p><b>Time:</b> ${time}</p>
-              <p>We will contact you via ${contactMethod}.</p>
-              <br/>
-              <p>Thank you,<br/>Footprints Team</p>
-            </div>
-          `,
-        }),
+      // 1. Create the Hostinger Transporter
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT),
+        secure: true, // true for 465
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
+
+      // 2. Define the Admin Notification
+      const adminMail = {
+        from: `"Footprints Admin" <${process.env.SMTP_USER}>`,
+        to: process.env.SMTP_USER, // This will forward to your Gmail automatically
+        replyTo: email, // Reply directly to the client from your Gmail!
+        subject: `New Booking: ${name} with ${therapistName || "Therapist"}`,
+        html: `
+          <div style="font-family: sans-serif; color: #333;">
+            <h2>New Booking Received</h2>
+            <p><b>Client Name:</b> ${name}</p>
+            <p><b>Therapist:</b> ${therapistName || "Not Specified"}</p>
+            <p><b>Date:</b> ${dateKey}</p>
+            <p><b>Time:</b> ${time}</p>
+            <p><b>Client Phone:</b> ${phone}</p>
+            <p><b>Client Email:</b> ${email}</p>
+            <p><b>Preferred Contact:</b> ${contactMethod}</p>
+          </div>
+        `,
+      };
+
+      // 3. Define the Client Confirmation
+      const clientMail = {
+        from: `"Footprints" <${process.env.SMTP_USER}>`,
+        to: email,
+        subject: "Your Consultation is Confirmed",
+        html: `
+          <div style="font-family: sans-serif; color: #333; max-width: 600px;">
+            <h2>Booking Confirmed</h2>
+            <p>Hi ${name},</p>
+            <p>Your consultation with <b>${therapistName || "our therapist"}</b> is confirmed.</p>
+            <p><b>Date:</b> ${dateKey}</p>
+            <p><b>Time:</b> ${time}</p>
+            <p>We will contact you via ${contactMethod}.</p>
+            <br/>
+            <p>Thank you,<br/>Footprints Team</p>
+          </div>
+        `,
+      };
+
+      // Send both emails
+      await Promise.all([
+        transporter.sendMail(adminMail),
+        transporter.sendMail(clientMail)
       ]);
 
-      // Log the actual response from Resend for verification
-      console.log("✅ Resend Response:", JSON.stringify(emailResponses));
+      console.log("✅ SMTP Emails sent successfully");
     } catch (mailError) {
-      console.error("❌ RESEND ERROR:", mailError);
+      console.error("❌ SMTP ERROR:", mailError);
+      // We don't return an error here because the DB insertion was successful.
     }
 
     return NextResponse.json({
