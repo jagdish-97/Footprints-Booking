@@ -239,7 +239,7 @@ export default function BookingPage() {
 
             setConfirmation({
                 visible: true,
-                text: `Your consultation request has been received. ${clientName} has requested ${selectedDay.fullLabel} at ${selectedTime} with ${therapist.name}.Our team will confirm availability and follow up shortly.`
+                text: `Your consultation request has been received. ${clientName} has requested ${selectedDay.fullLabel} at ${selectedTime} with ${therapist.name}. Our team will confirm availability and follow up shortly.`
             });
 
             resetBookingFlow();
