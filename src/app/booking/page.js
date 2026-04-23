@@ -231,7 +231,13 @@ export default function BookingPage() {
         }
 
         try {
-            await postBookedSlot(therapist.id, selectedDateKey, selectedTime, formFields);
+            await postBookedSlot(
+                therapist.id,
+                selectedDateKey,
+                selectedTime,
+                formFields,
+                therapist.name
+            );
 
             updateAvailabilityAfterBooking(selectedDateKey, selectedTime);
 
@@ -854,7 +860,7 @@ async function fetchBookedSlots(therapistId) {
     }
 }
 
-async function postBookedSlot(therapistId, dateKey, time, formFields) {
+async function postBookedSlot(therapistId, dateKey, time, formFields, therapistName) {
     const response = await fetch("/api/bookings", {
         method: "POST",
         headers: {
@@ -862,6 +868,7 @@ async function postBookedSlot(therapistId, dateKey, time, formFields) {
         },
         body: JSON.stringify({
             therapistId,
+            therapistName,
             dateKey,
             time,
             name: formFields.clientName,
