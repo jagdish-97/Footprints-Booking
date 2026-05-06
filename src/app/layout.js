@@ -17,7 +17,7 @@ export const metadata = {
   title: "Book Consultation | Footprints to Feel Better",
   description: "Footprints booking experience with therapist availability and booking details.",
   icons: {
-    icon: "/public/meetfootprints-icon.png", 
+    icon: "/public/meetfootprints-favicon.png", 
   },
 };
 
