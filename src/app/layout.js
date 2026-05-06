@@ -16,6 +16,9 @@ const manrope = Manrope({
 export const metadata = {
   title: "Book Consultation | Footprints to Feel Better",
   description: "Footprints booking experience with therapist availability and booking details.",
+  icons: {
+    icon: "/meetfootprints-icon.png", 
+  },
 };
 
 export default function RootLayout({ children }) {
