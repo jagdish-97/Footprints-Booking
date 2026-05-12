@@ -83,8 +83,7 @@ export default function BookingPage() {
         async function initPage() {
             try {
                 setLoading(true);
-                const therapists = await loadBookingTherapists();
-                const selectedTherapist = resolveTherapistFromQuery(therapists);
+                const selectedTherapist = await loadBookingTherapist();
                 
                 if (!selectedTherapist) {
                     setError("No therapist available. Please try again.");
@@ -832,17 +831,28 @@ export default function BookingPage() {
     );
 }
 
-async function loadBookingTherapists() {
+async function loadBookingTherapist() {
     try {
-        const response = await fetch("/data/therapists.json");
+        const therapistId = getTherapistIdFromQuery();
+        const requestUrl = therapistId
+            ? `/api/therapists?therapistId=${encodeURIComponent(therapistId)}`
+            : "/api/therapists";
+
+        const response = await fetch(requestUrl);
         if (!response.ok) {
-            throw new Error("Could not load therapists data.");
+            throw new Error("Could not load therapist data.");
         }
 
-        return await response.json();
+        const payload = await response.json();
+
+        if (therapistId) {
+            return payload || bookingFallbackTherapists[0] || null;
+        }
+
+        return payload?.[0] || bookingFallbackTherapists[0] || null;
     } catch (error) {
         console.warn("Using fallback therapist data for booking page.", error);
-        return bookingFallbackTherapists;
+        return bookingFallbackTherapists[0] || null;
     }
 }
 
@@ -887,30 +897,17 @@ async function postBookedSlot(therapistId, dateKey, time, formFields, therapistN
     return payload;
 }
 
-function resolveTherapistFromQuery(therapists) {
+function getTherapistIdFromQuery() {
     if (typeof window === "undefined") {
-        return therapists?.[0] || null;
+        return null;
     }
 
     try {
         const params = new URLSearchParams(window.location.search);
-        const therapistId = params.get("therapist");
-        
-        if (!therapistId) {
-            console.warn("No therapist ID in URL, using first therapist");
-            return therapists?.[0] || null;
-        }
-        
-        const found = therapists?.find((item) => item.id === therapistId);
-        if (!found) {
-            console.warn(`Therapist ${therapistId} not found, using first therapist`);
-            return therapists?.[0] || null;
-        }
-        
-        return found;
+        return params.get("therapist");
     } catch (error) {
-        console.error("Error resolving therapist from query:", error);
-        return therapists?.[0] || null;
+        console.error("Error reading therapist ID from query:", error);
+        return null;
     }
 }
 
@@ -1010,6 +1007,10 @@ function formatReadableDate(date) {
 }
 
 function formatPrice(value) {
+    if (value == null || value === "") {
+        return "-";
+    }
+
     return new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
