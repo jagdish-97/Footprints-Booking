@@ -18,7 +18,6 @@ const bookingFallbackTherapists = [
         specialties: ["Depression", "Anxiety", "Trauma"],
         languages: ["English", "Arabic"],
         therapyTypes: ["Individual", "Family"],
-        price: 165,
         availability: "Available",
         summary:
             "Values multiculturalism, cultural awareness, compassion, and empathy. Experienced supporting clients with depression, anxiety, trauma, self-esteem, stress management, and family or marital conflicts.",
@@ -493,12 +492,12 @@ export default function BookingPage() {
                         </div>
 
                         <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                            <div className="rounded-2xl bg-[#fff7f7] p-4">
+                            {/* <div className="rounded-2xl bg-[#fff7f7] p-4">
                                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-clay">Session rate</p>
                                 <p className="mt-2 font-heading text-2xl font-bold text-ink">
                                     {therapist ? formatPrice(therapist.price) : "-"}
                                 </p>
-                            </div>
+                            </div> */}
                             <div className="rounded-2xl bg-[#fff7f7] p-4">
                                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-clay">Availability</p>
                                 <p className="mt-2 font-heading text-2xl font-bold text-ink">
